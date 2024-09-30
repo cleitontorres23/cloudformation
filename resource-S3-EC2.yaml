@@ -1,0 +1,14 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This is the first cloudformation template to create S3 bucket and ec2
+Resources:
+ RahulS3bucket:
+  Type: AWS::S3::Bucket
+  Properties: 
+    BucketName: bucket-29092024
+ 
+ RahulEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: ami-0ebfd941bbafe70c6
+      InstanceType: t2.micro

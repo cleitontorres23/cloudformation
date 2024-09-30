@@ -1,0 +1,12 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This is a cloudformation template to create aws vpc
+Resources:
+  RahulVPC:
+    Type: AWS::EC2::VPC
+    Properties: 
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: True
+      Tags: 
+        - key: Name 
+          Value: Banking

@@ -1,0 +1,107 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Template using Resources, Parameters and Metadata
+
+Metadata: 
+  AWS::CloudFormation::Interface: 
+    ParameterGroups:    
+      - 
+        Label: 
+          default: "Network Configuration"
+        Parameters: 
+          - vpccidr
+          - subnetcidr
+      - 
+        Label: 
+          default: "Amazon EC2 Configuration"
+        Parameters: 
+          - ec2amiid
+          - ec2instancetype
+
+      - 
+        Label: 
+          default: "S3 Configuration"
+        Parameters: 
+          - s3bucketname
+
+Parameters:
+  vpccidr:
+    Type: String
+    Default: 10.0.0.0/16
+    AllowedValues:
+      - 10.0.0.0/16
+      - 10.0.0.0/24
+    Description: Enter the CIDR block for VPC  
+
+  subnetcidr:
+    Type: String
+    Default: 10.0.0.0/24
+    AllowedValues:
+      - 10.0.0.0/24
+      - 10.0.0.0/22
+    Description: Enter the CIDR block for Subnet 
+
+  ec2amiid:
+    Type: String
+    Default: ami-0ebfd941bbafe70c6
+    AllowedValues:
+      - ami-0ebfd941bbafe70c6
+      - ami-017cdd6dc706848b2
+    Description: Enter the AMI ID
+
+  ec2instancetype:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.nano
+    Description: Enter the Instance type
+
+  s3bucketname:
+    Type: String
+    Description: Enter S3 bucket name
+
+
+Resources:
+  bankingVPC:
+    Type: AWS::EC2::VPC
+    Properties: 
+      CidrBlock: !Ref vpccidr
+      EnableDnsHostnames: True
+      EnableDnsSupport: True
+      Tags: 
+        - Key : Project
+          Value : Banking
+
+  bankingsubnet:
+    Type: AWS::EC2::Subnet
+    Properties: 
+      CidrBlock: !Ref subnetcidr
+      Tags: 
+        - Key : Project
+          Value : Banking
+      VpcId: !Ref bankingVPC
+
+
+  bankingEC2:
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: !Ref ec2amiid
+      InstanceType: !Ref ec2instancetype
+      SubnetId: !Ref bankingsubnet
+      Tags: 
+        - Key : Project
+          Value : Banking
+
+  bankings3:
+   Type: AWS::S3::Bucket
+   Properties: 
+      BucketName: !Ref s3bucketname
+      Tags: 
+         - Key : Project
+           Value : Banking
+
+
+
+
